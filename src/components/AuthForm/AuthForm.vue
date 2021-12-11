@@ -1,13 +1,23 @@
 <template>
   <div class="page-container">
-    <form class="mui-form mui-panel container" @submit="handleSubmit">
-      <h1 class="mui--text-display1">Login</h1>
+    <form class="mui-form mui-panel container" @submit="onSubmit">
+      <h1 class="mui--text-display1">
+        {{ isSignupForm ? "Sign Up" : "Login" }}
+      </h1>
       <input-el
         label="Username"
         :value="formData.username"
         :error="errorMessages.username"
         fieldKey="username"
         :onChange="handleChange"
+      />
+      <input-el
+        label="Email"
+        :value="formData.email"
+        fieldKey="email"
+        :onChange="handleChange"
+        :error="errorMessages.email"
+        v-if="isSignupForm"
       />
       <input-el
         label="Password"
@@ -18,7 +28,7 @@
         type="password"
       />
       <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">
-        Login
+        {{ isSignupForm ? "Sign Up" : "Login" }}
       </button>
     </form>
   </div>
@@ -27,32 +37,47 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import authSchema from "../../schemas/auth";
 import Input from "../commons/form/Input.vue";
 import useForm from "../../hooks/useForm";
 import { AxiosError } from "axios";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { SchemaLike } from "yup/lib/types";
 
 export default defineComponent({
-  name: "Login",
+  name: "AuthForm",
   components: { "input-el": Input },
-  setup() {
-    const store = useStore();
-    const router = useRouter();
+  props: {
+    isSignupForm: { type: Boolean },
+    handleSubmit: {
+      type: Function,
+      default: () => {
+        // do nothing.
+      },
+    },
+    schema: { type: Object },
+  },
+  setup(props) {
+    const initialValues: {
+      username: string;
+      password: string;
+      email?: string;
+    } = { username: "", password: "" };
+
+    if (props.isSignupForm) {
+      initialValues.email = "";
+    }
+
     const { formData, errorMessages, handleChange, handleSubmit } = useForm({
-      initialValues: { username: "", password: "" },
-      schema: authSchema,
+      initialValues: {},
+      schema: props.schema as SchemaLike,
       onSubmit: async function (formData) {
         try {
-          await store.dispatch("auth/login", formData.value);
-          store.dispatch("alert/showAlert", {
-            type: "success",
-            message: "You are successfully logged in.",
-          });
-          router.push("/test");
+          await props?.handleSubmit(formData.value);
         } catch (err) {
-          errorMessages.value = (err as AxiosError).response?.data?.fieldErrors;
+          if ((err as AxiosError)?.response?.status === 400) {
+            errorMessages.value = (
+              err as AxiosError
+            ).response?.data?.fieldErrors;
+          }
         }
       },
     });
@@ -61,7 +86,7 @@ export default defineComponent({
       formData,
       errorMessages,
       handleChange,
-      handleSubmit,
+      onSubmit: handleSubmit,
     };
   },
 });
