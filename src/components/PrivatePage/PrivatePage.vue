@@ -1,27 +1,37 @@
 <template>
   <header>Header here</header>
-  <router-view></router-view>
+  <h1 v-if="isLoadingAuthStatus">Loading....</h1>
+  <router-view v-else></router-view>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "Private page",
   setup: function () {
     const router = useRouter();
+    const store = useStore();
 
-    onMounted(async () => {
-      const test = await window.fetch(
-        "https://dev.to/shubhadip/vue-3-vuex-4-modules-typescript-2i2o"
-      );
+    const isLoadingAuthStatus = computed(
+      () => store?.state?.auth?.isLoadingAuthStatus
+    );
+    const isLoggedIn = computed(() => store?.state?.auth?.isLoggedIn);
 
-      const test2 = true;
-
-      if (test2) {
-        router.replace("/");
+    function redirectIfNotLoggedIn() {
+      if (!isLoadingAuthStatus.value && !isLoggedIn.value) {
+        router.replace("/login");
       }
+    }
+
+    onMounted(redirectIfNotLoggedIn);
+
+    watch([isLoadingAuthStatus, isLoggedIn], () => {
+      redirectIfNotLoggedIn();
     });
+
+    return { isLoadingAuthStatus };
   },
 });
 </script>

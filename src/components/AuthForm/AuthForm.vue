@@ -30,22 +30,27 @@ import { defineComponent } from "vue";
 import authSchema from "../../schemas/auth";
 import Input from "../commons/form/Input.vue";
 import useForm from "../../hooks/useForm";
-import { login } from "../../services/auth";
 import { AxiosError } from "axios";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Login",
   components: { "input-el": Input },
   setup() {
     const store = useStore();
-
+    const router = useRouter();
     const { formData, errorMessages, handleChange, handleSubmit } = useForm({
       initialValues: { username: "", password: "" },
       schema: authSchema,
       onSubmit: async function (formData) {
         try {
           await store.dispatch("auth/login", formData.value);
+          store.dispatch("alert/showAlert", {
+            type: "success",
+            message: "You are successfully logged in.",
+          });
+          router.push("/test");
         } catch (err) {
           errorMessages.value = (err as AxiosError).response?.data?.fieldErrors;
         }

@@ -1,5 +1,4 @@
 <template>
-  {{ $store.state.auth.isLoggedIn ? "LoggedIn" : "Not Logged In" }}
   <router-view />
   <alert></alert>
 </template>

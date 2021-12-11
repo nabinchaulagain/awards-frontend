@@ -1,4 +1,4 @@
-import { login, refreshAccessToken } from "@/services/auth";
+import { login, refreshAccessToken, resolveLater } from "@/services/auth";
 import tokenStorage from "@/utils/auth";
 import { Module } from "vuex";
 
@@ -53,6 +53,7 @@ const auth: Module<AuthState, unknown> = {
       const refreshToken = localStorage.getItem("refreshToken");
 
       if (!refreshToken) {
+        await resolveLater();
         this.commit("auth/setNotLoggedInState");
         return;
       }

@@ -27,3 +27,9 @@ export const refreshAccessToken = async (): Promise<AuthResponse> => {
 
   return response;
 };
+
+export const resolveLater = () => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, 7000);
+  });
+};
