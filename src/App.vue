@@ -1,5 +1,5 @@
 <template>
-  <router-view />
+  <router-view v-if="!$store.state.auth.isLoadingAuthStatus" />
   <alert></alert>
 </template>
 
@@ -26,5 +26,14 @@ export default defineComponent({
   --color-brown: #675645;
   --color-dark-blue: #424756;
   --color-light: #eaeaea;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(172, 172, 172);
+  border-radius: 8px;
 }
 </style>

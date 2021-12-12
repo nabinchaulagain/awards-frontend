@@ -1,26 +1,14 @@
 <template>
-  <div class="home">
-    <button @click="showAlert">West</button>
-  </div>
+  <div class="home"></div>
+  <soldiers-table></soldiers-table>
 </template>
 
 <script lang="ts">
-import { useStore } from "vuex";
+import SoldiersTable from "@/components/SoldiersTable/SoldiersTable.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Home",
-  setup: function () {
-    const store = useStore();
-
-    return {
-      showAlert: () => {
-        store.dispatch("alert/showAlert", {
-          type: "error",
-          message: "6-1 is Down",
-        });
-      },
-    };
-  },
+  components: { "soldiers-table": SoldiersTable },
 });
 </script>
