@@ -11,6 +11,8 @@ export interface Soldier {
   serviceEndDate: number;
 }
 
-export function getSoldiers(): Promise<Soldier[]> {
-  return api.get("/soldiers");
+export function getSoldiers(
+  page: number
+): Promise<{ data: Soldier[]; size: number }> {
+  return api.get(`/soldiers?pageNumber=${page}&pageSize=2`);
 }

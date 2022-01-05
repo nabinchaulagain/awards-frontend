@@ -4,7 +4,17 @@
       title="Soldiers"
       :rowValues="soldiers"
       :columnsMetadata="columns"
-    ></table-view>
+    >
+      <template v-slot:header="{ columnMetadata }"
+        >{{ columnMetadata.header }}
+      </template>
+    </table-view>
+    <pagination
+      :page="currentPage"
+      pageSize="3"
+      :size="maxPages"
+      :gotoPage="gotoPage"
+    ></pagination>
   </div>
 </template>
 
@@ -13,14 +23,23 @@ import { computed, defineComponent, onMounted, ref } from "vue";
 import TableView from "../commons/TableView.vue";
 import { getSoldiers, Soldier } from "@/services/solider";
 import countries from "@/constants/countries";
+import Pagination from "../commons/Pagination.vue";
 
 export default defineComponent({
   setup() {
     const soldiersList = ref<Soldier[]>([]);
     const isLoading = ref(true);
+    const maxPages = ref(0);
+    const currentPage = ref(1);
+
+    const fetchAndSetSoldiers = async function () {
+      const response = await getSoldiers(currentPage.value);
+      soldiersList.value = response.data;
+      maxPages.value = Math.ceil(response.size / 3);
+    };
 
     onMounted(async () => {
-      soldiersList.value = await getSoldiers();
+      await fetchAndSetSoldiers();
     });
 
     function getCountry(soldier: Soldier) {
@@ -41,6 +60,12 @@ export default defineComponent({
       }))
     );
 
+    function gotoPage(page: number) {
+      currentPage.value = page;
+
+      fetchAndSetSoldiers();
+    }
+
     return {
       columns: [
         { path: "name", header: "Name", width: "8rem" },
@@ -50,9 +75,12 @@ export default defineComponent({
       ],
       isLoading,
       soldiers,
+      maxPages,
+      currentPage,
+      gotoPage,
     };
   },
-  components: { "table-view": TableView },
+  components: { "table-view": TableView, Pagination },
 });
 </script>
 

@@ -9,7 +9,9 @@
             :key="columnMetadata.path"
             :style="`width:${columnMetadata.width || 'auto'}`"
           >
-            {{ columnMetadata.header }}
+            <slot name="header" :columnMetadata="columnMetadata">
+              {{ columnMetadata.header }}
+            </slot>
           </th>
         </tr>
       </thead>
@@ -20,7 +22,7 @@
             :key="columnMetadata.path"
             :style="`width:${columnMetadata.width || 'auto'}`"
           >
-            {{ rowValue?.[columnMetadata?.path] }}
+            <slot name="column"> {{ rowValue?.[columnMetadata?.path] }} </slot>
           </td>
         </tr>
       </tbody>
@@ -53,10 +55,20 @@ table {
 
 .mui-table > thead > tr > th {
   border: 2px solid rgba(0, 0, 0, 0.12);
+  border-right: none;
+}
+
+.mui-table > thead > tr > th:last-of-type {
+  border-right: 2px solid rgba(0, 0, 0, 0.12);
 }
 
 .mui-table > tbody > tr > td {
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-top: none;
+  border-right: none;
+}
+
+.mui-table > tbody > tr > td:last-of-type {
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 </style>

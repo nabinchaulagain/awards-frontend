@@ -26,6 +26,7 @@ export default defineComponent({
   --color-brown: #675645;
   --color-dark-blue: #424756;
   --color-light: #eaeaea;
+  --color-grey: #808080;
 }
 
 ::-webkit-scrollbar {
