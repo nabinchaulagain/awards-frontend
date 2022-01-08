@@ -15,6 +15,7 @@
       :size="maxPages"
       :gotoPage="gotoPage"
     ></pagination>
+    <add-soldier-dialog></add-soldier-dialog>
   </div>
 </template>
 
@@ -24,6 +25,7 @@ import TableView from "../commons/TableView.vue";
 import { getSoldiers, Soldier } from "@/services/solider";
 import countries from "@/constants/countries";
 import Pagination from "../commons/Pagination.vue";
+import AddSoldierDialog from "../AddSoldierDialog/AddSoldierDialog.vue";
 
 export default defineComponent({
   setup() {
@@ -80,11 +82,15 @@ export default defineComponent({
       gotoPage,
     };
   },
-  components: { "table-view": TableView, Pagination },
+  components: {
+    "table-view": TableView,
+    Pagination,
+    "add-soldier-dialog": AddSoldierDialog,
+  },
 });
 </script>
 
-<style scoped>
+<style scope, AddSoldierDialogd>
 .page-container {
   width: 1200px;
   margin: 16px auto;
