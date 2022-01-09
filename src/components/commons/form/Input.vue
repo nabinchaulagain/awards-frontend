@@ -1,7 +1,10 @@
 <template>
-  <div class="mui-textfield mui-textfield--float-label">
+  <div
+    :class="type === 'text' ? 'mui-textfield mui-textfield--float-label' : ''"
+  >
+    <label v-if="type === 'date'" class="date-label">{{ label }}</label>
     <input :type="type" @input="handleChange" :value="value" />
-    <label>{{ label }}</label>
+    <label v-if="type !== 'date'">{{ label }}</label>
     <error :message="error" />
   </div>
 </template>
@@ -33,3 +36,11 @@ export default defineComponent({
   name: "Input",
 });
 </script>
+
+<style scoped>
+.date-label {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-right: 12px;
+}
+</style>

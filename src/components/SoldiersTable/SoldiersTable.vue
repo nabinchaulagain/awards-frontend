@@ -11,7 +11,7 @@
     </table-view>
     <pagination
       :page="currentPage"
-      pageSize="3"
+      :pageSize="3"
       :size="maxPages"
       :gotoPage="gotoPage"
     ></pagination>

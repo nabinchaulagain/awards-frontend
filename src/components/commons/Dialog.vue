@@ -1,6 +1,19 @@
 <template>
   <div class="overlay" :style="`display:${isOpen ? 'initial' : 'none'}`">
-    <div class="dialog" ref="dialog"></div>
+    <div class="dialog" ref="dialog">
+      <div class="dialog-header">{{ header }}</div>
+      <div class="divider"></div>
+      <div class="main-content"><slot></slot></div>
+
+      <div class="divider"></div>
+      <div class="buttons">
+        <button class="mui-btn mui-btn--accent" @click="onSubmit">
+          {{ submitButtonText }}</button
+        ><button class="mui-btn mui-btn--raised" @click="closeDialog">
+          {{ cancelButtonText }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -19,7 +32,6 @@ export default defineComponent({
 
     const setDialogPosition = function () {
       if (dialog.value) {
-        console.log(dialog);
         dialog.value.setAttribute(
           "style",
           `top: calc(50% - ${
@@ -29,7 +41,10 @@ export default defineComponent({
       }
     };
     const handleOutSideClick = (event: MouseEvent) => {
-      if (event.target !== dialog.value) {
+      if (
+        event.target !== dialog.value &&
+        !dialog?.value?.contains(event?.target as Node)
+      ) {
         props.closeDialog();
       }
     };
@@ -52,6 +67,10 @@ export default defineComponent({
   props: {
     isDialogOpen: { type: Boolean, default: false, required: true },
     closeDialog: { type: Function, required: true },
+    header: { type: String, required: true },
+    submitButtonText: { type: String, default: () => "Submit" },
+    cancelButtonText: { type: String, default: () => "Cancel" },
+    onSubmit: { type: Function },
   },
 });
 </script>
@@ -67,9 +86,38 @@ export default defineComponent({
 }
 
 .dialog {
-  min-width: 600px;
-  min-height: 800px;
+  width: 500px;
+  border-radius: 4px;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.4);
   background: white;
   position: absolute;
+  padding: 16px;
+}
+
+.dialog-header {
+  font-size: 24px;
+}
+
+.divider {
+  height: 2px;
+  width: calc(100% + 32px);
+  background: rgba(0, 0, 0, 0.14);
+  margin-top: 8px;
+  margin-left: -16px;
+  margin-bottom: 8px;
+}
+
+.buttons {
+  margin-top: 16px;
+}
+
+.buttons button {
+  margin-right: 8px;
+}
+
+.main-content {
+  max-height: 500px;
+  overflow: auto;
 }
 </style>

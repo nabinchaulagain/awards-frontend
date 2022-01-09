@@ -39,6 +39,7 @@ export default defineComponent({
   right: 4px;
   width: auto;
   padding: 20px 24px;
+  z-index: 2;
 }
 
 .el-alert {
