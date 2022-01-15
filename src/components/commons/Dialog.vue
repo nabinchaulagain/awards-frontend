@@ -1,7 +1,12 @@
 <template>
   <div class="overlay" :style="`display:${isOpen ? 'initial' : 'none'}`">
     <div class="dialog" ref="dialog">
-      <div class="dialog-header">{{ header }}</div>
+      <div class="dialog-header">
+        <div class="header-text">{{ header }}</div>
+        <div class="close-container" @click="closeDialog">
+          <vue-icon icon="times" size="24px" />
+        </div>
+      </div>
       <div class="divider"></div>
       <div class="main-content"><slot></slot></div>
 
@@ -45,7 +50,7 @@ export default defineComponent({
         event.target !== dialog.value &&
         !dialog?.value?.contains(event?.target as Node)
       ) {
-        props.closeDialog();
+        // props.closeDialog();
       }
     };
 
@@ -96,7 +101,16 @@ export default defineComponent({
 }
 
 .dialog-header {
+  display: flex;
+}
+
+.header-text {
+  flex-grow: 2;
   font-size: 24px;
+}
+
+.close-container {
+  cursor: pointer;
 }
 
 .divider {

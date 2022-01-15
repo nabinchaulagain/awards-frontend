@@ -107,6 +107,7 @@ h1 {
 }
 
 .page-container {
+  box-sizing: border-box;
   height: 100vh;
   background: var(--color-light-green);
   padding-top: 24px;

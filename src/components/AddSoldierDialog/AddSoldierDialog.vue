@@ -10,6 +10,7 @@
         :onChange="handleChange"
         fieldKey="picture"
         :image="formData.picture"
+        :error="errorMessages.picture"
       />
       <input-el
         label="Name"
@@ -18,28 +19,48 @@
         :value="formData.name"
         :error="errorMessages.name"
       ></input-el>
+      <div class="two-column-grid">
+        <input-el
+          label="Birthplace"
+          fieldKey="birthplace"
+          :onChange="handleChange"
+          :value="formData.birthplace"
+          :error="errorMessages.birthplace"
+        ></input-el>
+        <input-el
+          label="Date of birth"
+          type="date"
+          fieldKey="dateOfBirth"
+          :onChange="handleChange"
+          :value="formData.dateOfBirth"
+          :error="errorMessages.dateOfBirth"
+        ></input-el>
+
+        <input-el
+          label="Deathplace"
+          fieldKey="deathplace"
+          :onChange="handleChange"
+          :value="formData.deathplace"
+          :error="errorMessages.deathplace"
+        ></input-el>
+        <input-el
+          label="Date of death"
+          type="date"
+          fieldKey="dateOfDeath"
+          :onChange="handleChange"
+          :value="formData.dateOfDeath"
+          :error="errorMessages.dateOfDeath"
+        ></input-el>
+      </div>
       <dropdown-el
-        label="Country"
-        fieldKey="country"
-        :options="countryOptions"
-        labelKey="name"
-        :onChange="handleChange"
-        :value="formData.country"
-        :error="errorMessages.country"
-      >
-        <template v-slot:option="props">
-          {{ props.option.emoji }}
-          {{ props.option.name }}
-        </template>
-      </dropdown-el>
-      <input-el
-        draggable="true"
         label="Unit"
         fieldKey="unit"
         :onChange="handleChange"
+        labelKey="name"
+        :options="unitOptions"
         :value="formData.unit"
         :error="errorMessages.unit"
-      ></input-el>
+      ></dropdown-el>
       <input-el
         label="Rank"
         fieldKey="rank"
@@ -65,16 +86,24 @@
           :error="errorMessages.serviceEndDate"
         ></input-el>
       </div>
+      <input-el
+        label="Description"
+        isTextArea
+        fieldKey="description"
+        :onChange="handleChange"
+        :value="formData.description"
+        :error="errorMessages.description"
+      />
     </div>
   </popup-dialog>
-  <div class="add-soldier-container">
+  <div class="add-soldier-container" v-if="isAdmin">
     <button class="mui-btn mui-btn--fab mui-btn--danger" @click="openDialog">
       +
     </button>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import Dialog from "../commons/Dialog.vue";
 import Dropdown from "../commons/form/Dropdown.vue";
 import Input from "../commons/form/Input.vue";
@@ -82,6 +111,9 @@ import ImageInput from "../commons/form/ImageInput.vue";
 import countryOptions from "../../constants/countries";
 import useForm from "@/hooks/useForm";
 import soldierSchema from "../../schemas/soldier";
+import { addSoldier } from "@/services/solider";
+import { getUnits, Unit } from "@/services/unit";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "AddSoldierDialog",
@@ -91,14 +123,27 @@ export default defineComponent({
     "dropdown-el": Dropdown,
     "image-input": ImageInput,
   },
-  setup: function () {
+  props: {
+    refreshTable: { type: Function, required: true },
+  },
+  setup: function (props) {
+    const store = useStore();
     const { formData, errorMessages, handleChange, handleSubmit } = useForm({
       initialValues: {},
       schema: soldierSchema,
-      onSubmit: (formData) => {
-        console.log("submit", formData);
-        //do nothing
+      onSubmit: async (formData) => {
+        await addSoldier({
+          ...formData.value,
+        });
+
+        isOpen.value = false;
+        await props.refreshTable();
       },
+    });
+    const unitOptions = ref<Unit[]>([]);
+
+    onMounted(async () => {
+      unitOptions.value = [...(await getUnits())];
     });
 
     const isOpen = ref(false);
@@ -122,6 +167,8 @@ export default defineComponent({
       errorMessages,
       handleChange,
       handleSubmit,
+      unitOptions,
+      isAdmin: computed(() => store.state.auth.isAdmin),
     };
   },
 });

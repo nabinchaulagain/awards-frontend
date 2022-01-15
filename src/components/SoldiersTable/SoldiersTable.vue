@@ -15,7 +15,9 @@
       :size="maxPages"
       :gotoPage="gotoPage"
     ></pagination>
-    <add-soldier-dialog></add-soldier-dialog>
+    <add-soldier-dialog
+      :refreshTable="fetchAndSetSoldiers"
+    ></add-soldier-dialog>
   </div>
 </template>
 
@@ -80,6 +82,7 @@ export default defineComponent({
       maxPages,
       currentPage,
       gotoPage,
+      fetchAndSetSoldiers,
     };
   },
   components: {
@@ -90,7 +93,7 @@ export default defineComponent({
 });
 </script>
 
-<style scope, AddSoldierDialogd>
+<style scoped>
 .page-container {
   width: 1200px;
   margin: 16px auto;

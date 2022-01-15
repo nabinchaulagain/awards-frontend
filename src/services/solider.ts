@@ -14,5 +14,11 @@ export interface Soldier {
 export function getSoldiers(
   page: number
 ): Promise<{ data: Soldier[]; size: number }> {
-  return api.get(`/soldiers?pageNumber=${page}&pageSize=2`);
+  return api.get(`/soldiers?pageNumber=${page}&pageSize=6`);
+}
+
+export function addSoldier(
+  formData: Record<string, unknown>
+): Promise<Soldier> {
+  return api.post("/soldiers", formData);
 }

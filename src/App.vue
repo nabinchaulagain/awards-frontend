@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { useStore } from "vuex";
 import Alert from "./components/commons/Alert.vue";
 
@@ -12,8 +12,9 @@ export default defineComponent({
   components: { alert: Alert },
   setup: function () {
     const store = useStore();
-
-    store.dispatch("auth/loadAuthState");
+    onMounted(() => {
+      store.dispatch("auth/loadAuthState");
+    });
   },
 });
 </script>

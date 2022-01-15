@@ -11,11 +11,13 @@
     <img :src="image" v-if="image" />
     <div class="drop-container" v-else>Please drop a file here</div>
   </div>
+  <error :message="error" />
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useStore } from "vuex";
 import { uploadFile } from "@/services/file";
+import ErrorMessage from "../ErrorMessage.vue";
 
 export default defineComponent({
   setup(props) {
@@ -59,10 +61,12 @@ export default defineComponent({
     return { handleDragEnter, handleDrop, handleDragLeave, isDragging };
   },
   name: "image-input",
+  components: { error: ErrorMessage },
   props: {
     image: { type: String },
     onChange: { type: Function, required: true },
     fieldKey: { type: String, required: true },
+    error: { type: String },
   },
 });
 </script>

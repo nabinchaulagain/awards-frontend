@@ -11,6 +11,7 @@ interface AuthState {
   isLoadingAuthStatus: boolean;
   isLoggedIn: boolean;
   user: User | null;
+  isAdmin: boolean;
 }
 
 const auth: Module<AuthState, unknown> = {
@@ -19,22 +20,27 @@ const auth: Module<AuthState, unknown> = {
     isLoadingAuthStatus: true,
     isLoggedIn: false,
     user: null,
+    isAdmin: false,
   },
   mutations: {
     login(state, payload) {
       state.user = { username: payload.username, roles: payload.roles };
+      state.isAdmin = payload.roles.includes("ADMIN");
 
       tokenStorage.setAccessToken(payload.access_token);
       localStorage.setItem("refreshToken", payload.refresh_token);
 
+      state.isLoadingAuthStatus = false;
       state.isLoggedIn = true;
     },
     setNotLoggedInState(state) {
       state.isLoggedIn = false;
       state.isLoadingAuthStatus = false;
+      state.isAdmin = false;
     },
     setLoggedInState(state, payload) {
       state.user = { username: payload.username, roles: payload.roles };
+      state.isAdmin = payload.roles.includes("ADMIN");
 
       tokenStorage.setAccessToken(payload.access_token);
       localStorage.setItem("refreshToken", payload.refresh_token);

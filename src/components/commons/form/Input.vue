@@ -1,9 +1,19 @@
 <template>
   <div
-    :class="type === 'text' ? 'mui-textfield mui-textfield--float-label' : ''"
+    :class="
+      type === 'text' || type === 'password'
+        ? 'mui-textfield mui-textfield--float-label'
+        : ''
+    "
   >
     <label v-if="type === 'date'" class="date-label">{{ label }}</label>
-    <input :type="type" @input="handleChange" :value="value" />
+    <input
+      :type="type"
+      @input="handleChange"
+      :value="value"
+      v-if="!isTextArea"
+    />
+    <textarea @input="handleChange" v-else />
     <label v-if="type !== 'date'">{{ label }}</label>
     <error :message="error" />
   </div>
@@ -21,6 +31,7 @@ export default defineComponent({
     fieldKey: { type: String },
     onChange: { type: Function },
     type: { type: String, default: "text" },
+    isTextArea: { type: Boolean },
   },
   components: { error: ErrorMessage },
   setup(props) {
@@ -42,5 +53,9 @@ export default defineComponent({
   font-size: 14px;
   color: rgba(0, 0, 0, 0.5);
   margin-right: 12px;
+}
+
+input {
+  width: 100%;
 }
 </style>
