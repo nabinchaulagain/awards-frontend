@@ -1,5 +1,4 @@
 <template>
-  <header>Header here</header>
   <h1 v-if="isLoadingAuthStatus">Loading....</h1>
   <router-view v-else></router-view>
 </template>

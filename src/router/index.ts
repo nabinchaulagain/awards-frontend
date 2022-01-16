@@ -26,7 +26,9 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "private-page" */ "../components/PrivatePage/PrivatePage.vue"
       ),
-    children: [{ path: "/test", component: () => import("../views/Home.vue") }],
+    children: [
+      { path: "/units", component: () => import("../views/Units.vue") },
+    ],
   },
 ];
 
