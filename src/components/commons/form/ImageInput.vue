@@ -45,7 +45,7 @@ export default defineComponent({
       console.log(fileToUpload?.type);
       if (
         fileToUpload &&
-        ["image/png", "image/jpg"].includes(fileToUpload.type)
+        ["image/png", "image/jpeg"].includes(fileToUpload.type)
       ) {
         const response = await uploadFile(fileToUpload);
 

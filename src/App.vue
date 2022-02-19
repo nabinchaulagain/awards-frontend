@@ -38,4 +38,40 @@ export default defineComponent({
   background: rgb(172, 172, 172);
   border-radius: 8px;
 }
+
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.font-sm {
+  font-size: 12px;
+}
+
+.font-md {
+  font-size: 16px;
+}
+
+.font-lg {
+  font-size: 20px;
+}
+
+.font-xl {
+  font-size: 24px;
+}
+
+.font-xxl {
+  font-size: 28px;
+}
+
+.bold-semi {
+  font-weight: 550;
+}
+
+.bold {
+  font-weight: 600;
+}
 </style>

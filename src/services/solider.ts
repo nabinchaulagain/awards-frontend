@@ -22,3 +22,7 @@ export function addSoldier(
 ): Promise<Soldier> {
   return api.post("/soldiers", formData);
 }
+
+export function getSoldier(id: number): Promise<Soldier> {
+  return api.get(`/soldiers/${id}`);
+}

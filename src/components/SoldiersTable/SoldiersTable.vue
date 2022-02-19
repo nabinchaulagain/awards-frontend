@@ -8,6 +8,15 @@
       <template v-slot:header="{ columnMetadata }"
         >{{ columnMetadata.header }}
       </template>
+      <template v-slot:column="{ columnMetadata, rowValue }">
+        <router-link
+          :to="{ name: 'soldiersDetailPage', params: { id: rowValue?.id } }"
+          v-if="columnMetadata.path === 'name'"
+        >
+          {{ rowValue?.[columnMetadata.path] }}
+        </router-link>
+        <div v-else>{{ rowValue?.[columnMetadata.path] }}</div>
+      </template>
     </table-view>
     <pagination
       :page="currentPage"

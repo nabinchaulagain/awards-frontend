@@ -22,7 +22,13 @@
             :key="columnMetadata.path"
             :style="`width:${columnMetadata.width || 'auto'}`"
           >
-            <slot name="column"> {{ rowValue?.[columnMetadata?.path] }} </slot>
+            <slot
+              name="column"
+              :columnMetadata="columnMetadata"
+              :rowValue="rowValue"
+            >
+              {{ rowValue?.[columnMetadata?.path] }}
+            </slot>
           </td>
         </tr>
       </tbody>

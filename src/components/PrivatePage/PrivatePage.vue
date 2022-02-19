@@ -16,17 +16,17 @@ export default defineComponent({
     const isLoadingAuthStatus = computed(
       () => store?.state?.auth?.isLoadingAuthStatus
     );
-    const isLoggedIn = computed(() => store?.state?.auth?.isLoggedIn);
+    const isAdmin = computed(() => store?.state?.auth?.isAdmin);
 
     function redirectIfNotLoggedIn() {
-      if (!isLoadingAuthStatus.value && !isLoggedIn.value) {
+      if (!isLoadingAuthStatus.value && !isAdmin.value) {
         router.replace("/login");
       }
     }
 
     onMounted(redirectIfNotLoggedIn);
 
-    watch([isLoadingAuthStatus, isLoggedIn], () => {
+    watch([isLoadingAuthStatus, isAdmin], () => {
       redirectIfNotLoggedIn();
     });
 
