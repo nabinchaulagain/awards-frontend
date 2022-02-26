@@ -1,6 +1,7 @@
 import api from "@/utils/api";
 
 export interface Soldier {
+  id: number;
   name: string;
   unit: {
     name: string;

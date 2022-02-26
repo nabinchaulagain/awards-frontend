@@ -24,9 +24,7 @@
       :size="maxPages"
       :gotoPage="gotoPage"
     ></pagination>
-    <add-soldier-dialog
-      :refreshTable="fetchAndSetSoldiers"
-    ></add-soldier-dialog>
+    <router-link :to="{ name: 'addSoldierPage' }">Add a soldier</router-link>
   </div>
 </template>
 
@@ -36,7 +34,6 @@ import TableView from "../commons/TableView.vue";
 import { getSoldiers, Soldier } from "@/services/solider";
 import countries from "@/constants/countries";
 import Pagination from "../commons/Pagination.vue";
-import AddSoldierDialog from "../AddSoldierDialog/AddSoldierDialog.vue";
 
 export default defineComponent({
   setup() {
@@ -97,7 +94,6 @@ export default defineComponent({
   components: {
     "table-view": TableView,
     Pagination,
-    "add-soldier-dialog": AddSoldierDialog,
   },
 });
 </script>
