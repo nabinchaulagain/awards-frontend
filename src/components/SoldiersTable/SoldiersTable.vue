@@ -17,6 +17,15 @@
         </router-link>
         <div v-else>{{ rowValue?.[columnMetadata.path] }}</div>
       </template>
+      <template v-slot:belowHeader>
+        <div class="text-right">
+          <router-link
+            :to="{ name: 'addSoldierPage' }"
+            class="mui-btn mui-btn--primary"
+            >Add a soldier</router-link
+          >
+        </div>
+      </template>
     </table-view>
     <pagination
       :page="currentPage"
@@ -24,7 +33,6 @@
       :size="maxPages"
       :gotoPage="gotoPage"
     ></pagination>
-    <router-link :to="{ name: 'addSoldierPage' }">Add a soldier</router-link>
   </div>
 </template>
 

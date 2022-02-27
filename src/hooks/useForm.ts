@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { Ref } from "vue-demi";
 import { ValidationError } from "yup";
 
@@ -9,7 +9,9 @@ export default function ({
   schema,
   onSubmit,
 }: {
-  initialValues: { [key: string]: unknown };
+  initialValues:
+    | { [key: string]: unknown }
+    | (() => Ref<{ [key: string]: unknown }>);
   schema: SchemaLike;
   onSubmit: (formData: Ref) => void;
 }): {
@@ -18,9 +20,13 @@ export default function ({
   handleChange: (fieldKey: string, value: unknown) => void;
   handleSubmit: (ev: MouseEvent) => void;
 } {
-  const formData = ref(initialValues);
+  const formData = ref(
+    typeof initialValues === "function" ? initialValues() : initialValues
+  );
   const errorMessages = ref(
-    Object.keys(initialValues).reduce((acc, curr) => {
+    Object.keys(
+      typeof initialValues === "function" ? initialValues() : initialValues
+    ).reduce((acc, curr) => {
       return { ...acc, [curr]: "" };
     }, {})
   );
@@ -42,6 +48,12 @@ export default function ({
       }
     }
   };
+
+  if (typeof initialValues === "function") {
+    watch(initialValues, (newValue) => {
+      formData.value = { ...newValue };
+    });
+  }
 
   const handleSubmit = function (ev: MouseEvent) {
     ev.preventDefault();

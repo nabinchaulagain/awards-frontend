@@ -13,7 +13,7 @@
       :value="value"
       v-if="!isTextArea"
     />
-    <textarea @input="handleChange" v-else />
+    <textarea @input="handleChange" v-else>{{ value }} </textarea>
     <label v-if="type !== 'date'">{{ label }}</label>
     <error :message="error" />
   </div>

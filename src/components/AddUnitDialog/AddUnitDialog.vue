@@ -68,7 +68,6 @@ export default defineComponent({
       initialValues: {},
       schema: unitSchema,
       onSubmit: async (formData) => {
-        console.log(formData);
         await addUnit({
           ...formData.value,
           country: (formData.value as unknown as { country: { code: string } })

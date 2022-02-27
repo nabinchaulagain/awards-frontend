@@ -88,11 +88,13 @@
       :value="formData.description"
       :error="errorMessages.description"
     />
-    <button class="mui-btn mui-btn--primary" @click="handleSubmit">Add</button>
+    <button class="mui-btn mui-btn--primary" @click="handleSubmit">
+      {{ buttonText }}
+    </button>
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, onMounted, ref, Ref } from "vue";
 import Dropdown from "../commons/form/Dropdown.vue";
 import Input from "../commons/form/Input.vue";
 import ImageInput from "../commons/form/ImageInput.vue";
@@ -103,17 +105,21 @@ import { getUnits, Unit } from "@/services/unit";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  name: "AddSoldierView",
+  name: "AddEditSoldierForm",
   components: {
     "input-el": Input,
     "dropdown-el": Dropdown,
     "image-input": ImageInput,
   },
-  props: { onSubmit: { type: Function, required: true } },
+  props: {
+    onSubmit: { type: Function, required: true },
+    initialValues: { type: Object },
+    buttonText: { type: String, default: "Add" },
+  },
   setup: function (props) {
     const store = useStore();
     const { formData, errorMessages, handleChange, handleSubmit } = useForm({
-      initialValues: {},
+      initialValues: (() => props.initialValues as Ref) ?? {},
       schema: soldierSchema,
       onSubmit: async (formData) => {
         props.onSubmit(formData.value);

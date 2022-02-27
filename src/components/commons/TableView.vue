@@ -1,5 +1,6 @@
 <template>
   <h1>{{ title }}</h1>
+  <slot name="belowHeader"> </slot>
   <div :style="`max-height:${maxHeight};overflow:auto;`">
     <table class="mui-table mui-table--bordered">
       <thead>

@@ -42,7 +42,6 @@ export default defineComponent({
       ev.preventDefault();
       ev.stopPropagation();
       const fileToUpload = ev.dataTransfer?.files[0];
-      console.log(fileToUpload?.type);
       if (
         fileToUpload &&
         ["image/png", "image/jpeg"].includes(fileToUpload.type)

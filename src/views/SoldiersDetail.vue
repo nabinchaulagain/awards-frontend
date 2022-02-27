@@ -5,6 +5,11 @@
     </div>
     <div class="text-center font-md">
       <div class="bold font-xxl">{{ soldier.name }}</div>
+      <router-link
+        :to="{ name: 'editSoldierPage', params: { id: soldier.id } }"
+        v-if="!!soldier?.id"
+        >Edit soldier</router-link
+      >
       <div>
         Rank: <span class="bold">{{ soldier.rank }}</span>
       </div>

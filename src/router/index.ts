@@ -22,6 +22,15 @@ const routes: Array<RouteRecordRaw> = [
         /* webpackChunkName: "add-soldier-page" */ "../views/AddSoldierView.vue"
       ),
   },
+
+  {
+    name: "editSoldierPage",
+    path: "/soldiers/:id/edit",
+    component: () =>
+      import(
+        /* webpackChunkName: "edit-soldier-page" */ "../views/EditSoldierView.vue"
+      ),
+  },
   {
     path: "/login",
     name: "Login",

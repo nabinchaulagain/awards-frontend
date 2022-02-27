@@ -47,6 +47,14 @@ export default defineComponent({
   text-align: justify;
 }
 
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
 .font-sm {
   font-size: 12px;
 }
